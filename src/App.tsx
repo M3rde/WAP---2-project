@@ -3,8 +3,7 @@ import Navbar from './components/Navbar';
 import MyEvents from './pages/MyEvents';
 import Map from './pages/Map';
 import EventDetail from './pages/EventDetail.tsx';
-
-const Events = () => <div className="container"><h1>Všechny Akce</h1></div>;
+import Events from './pages/Events.tsx';
 
 function App() {
   return (

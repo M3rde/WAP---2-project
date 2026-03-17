@@ -1,0 +1,28 @@
+.page-container {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
+
+.section-title {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.events-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--gray-border);
+  padding-bottom: 1rem;
+}
+
+.events-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: var(--text-primary);
+}
