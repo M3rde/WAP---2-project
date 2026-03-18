@@ -1,23 +1,28 @@
 import { useState } from 'react';
 import EventCard from '../components/EventCard';
-import { mockEvents } from '../data/mockEvents';
+import type { AppEvent } from '../App';
 import '../styles/myEvents.css';
 
 type TabType = 'saved' | 'favorite' | 'past';
 
-export default function MyEvents() {
+interface MyEventsProps {
+  events: AppEvent[];
+  toggleSaved: (id: number) => void;
+}
+
+export default function MyEvents({ events, toggleSaved }: MyEventsProps) {
   const [activeTab, setActiveTab] = useState<TabType>('saved');
 
   const getFilteredEvents = () => {
     switch (activeTab) {
       case 'saved':
-        return mockEvents.filter(event => event.isSaved);
+        return events.filter(event => event.isSaved);
       case 'favorite':
-        return mockEvents.filter(event => event.isFavorite);
+        return events.filter(event => event.isFavorite);
       case 'past':
         return []; 
       default:
-        return mockEvents;
+        return events;
     }
   };
 
@@ -55,7 +60,7 @@ export default function MyEvents() {
       <div className="events-grid">
         {displayedEvents.length > 0 ? (
           displayedEvents.map(event => (
-            <EventCard key={event.id} event={event} />
+            <EventCard key={event.id} event={event} toggleSaved={toggleSaved} />
           ))
         ) : (
           <p>V této kategorii zatím nemáte žádné akce.</p>

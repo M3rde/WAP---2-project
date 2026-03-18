@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import { mockEvents } from '../data/mockEvents';
+import type { AppEvent } from '../App';
 import '../styles/map.css';
 
 import 'leaflet/dist/leaflet.css';
@@ -24,16 +24,20 @@ function getDistanceInKm(lat1: number, lon1: number, lat2: number, lon2: number)
   return R * c;
 }
 
-export default function Map() {
+interface MapProps {
+  events: AppEvent[];
+}
+
+export default function Map({ events }: MapProps) {
   const [activeTab, setActiveTab] = useState<'all' | 'local'>('all');
 
   const localCenter: [number, number] = [49.195, 16.606]; //TODO - získat aktuální polohu uživatele
-  const RADIUS_KM = 30; 
+  const RADIUS_KM = 20; 
 
   const currentCenter: [number, number] = activeTab === 'all' ? [49.8, 15.5] : localCenter;
-  const currentZoom: number = activeTab === 'all' ? 7 : 11;
+  const currentZoom: number = activeTab === 'all' ? 7 : 12;
 
-  const displayedEvents = mockEvents.filter(event => {
+  const displayedEvents = events.filter(event => {
     if (activeTab === 'all') return true;
 
     const distance = getDistanceInKm(localCenter[0], localCenter[1], event.lat, event.lng);
@@ -81,7 +85,7 @@ export default function Map() {
             <Marker key={event.id} position={[event.lat, event.lng]}>
               <Popup>
                 <strong>{event.title}</strong><br />
-                {event.location}<br />
+                {event.categories}<br />
                 <small>({Math.round(getDistanceInKm(localCenter[0], localCenter[1], event.lat, event.lng))} km od vás)</small>
               </Popup>
             </Marker>

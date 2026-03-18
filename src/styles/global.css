@@ -80,5 +80,7 @@ button:focus-visible {
     --text-color: rgba(255, 255, 255, 0.87);
     --gray-light: #1a1a1a;
     --primary-color: #ffffff;
+    --gray-border: #333333;
+    --accent-color: #88c0d0;
   }
 }
