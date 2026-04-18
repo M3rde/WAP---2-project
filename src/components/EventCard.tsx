@@ -31,6 +31,7 @@ export default function EventCard({ event, toggleSaved }: EventCardProps) {
         </div>
         <div className="skeleton-content">
           <div className="skeleton-title" style={{ background: 'none', color: 'var(--text-color)', height: 'auto', width: 'auto', fontWeight: 600, fontSize: '1.1rem', padding: 0 }}>{event.title}</div>
+           <div className="skeleton-date" style={{ background: 'none', color: '#666', height: 'auto', width: 'auto', fontSize: '0.9rem', padding: 0 }}>{event.dateFrom}</div>
           <div className="skeleton-description" style={{ background: 'none', color: '#666', height: 'auto', width: 'auto', fontSize: '0.95rem', padding: 0 }}>{event.description}</div>
           <div className="skeleton-footer" style={{ background: 'none', color: 'var(--accent-color)', height: 'auto', width: 'auto', fontSize: '0.85rem', padding: 0 }}>{event.categories}</div>
         </div>

@@ -1,3 +1,29 @@
+.calendar-menu-btn-mobile {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  background: none;
+  color: var(--primary-color);
+  font-weight: 500;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background 0.18s, color 0.18s;
+  margin-top: 1.5rem;
+}
+.calendar-menu-btn-mobile:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .calendar-menu-btn-mobile {
+    display: flex;  
+     margin-top: 0;
+     padding: 0;
+  }
+}
 .navbar {
   border-bottom: 1px solid var(--gray-border);
   padding: 1rem 0;

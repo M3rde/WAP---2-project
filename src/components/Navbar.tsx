@@ -70,6 +70,10 @@ export default function Navbar() {
           <Link to="/events" onClick={() => setMenuOpen(false)}>Akce</Link>
           <Link to="/my-events" onClick={() => setMenuOpen(false)}>Moje akce</Link>
           <Link to="/map" onClick={() => setMenuOpen(false)}>Mapa</Link>
+          <Link to="/events" onClick={() => setMenuOpen(false)} className="calendar-menu-btn-mobile">
+            <Calendar size={22} style={{marginRight: 8}} />
+            <span>Kalendář</span>
+          </Link>
         </nav>
  
         {/* Desktop*/}
