@@ -44,37 +44,22 @@ export default function Navbar({ events }: NavbarProps) {
     }
   },[mobileSearchOpen])
 
-  // Zavřít desktop kalendář při kliknutí mimo
+
+  // callendar close with clicking outside the box
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        calendarDropdownRef.current &&
-        !calendarDropdownRef.current.contains(event.target as Node)
-      ) {
+      if (calendarOpen && calendarDropdownRef.current && !calendarDropdownRef.current.contains(event.target as Node)) {
         setCalendarOpen(false);
       }
-    };
-    if (calendarOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
-    }
-  }, [calendarOpen]);
-
-  // Zavřít mobilní kalendář při kliknutí mimo
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        calendarMobileDropdownRef.current &&
-        !calendarMobileDropdownRef.current.contains(event.target as Node)
-      ) {
+      if (calendarMobileOpen && calendarMobileDropdownRef.current && !calendarMobileDropdownRef.current.contains(event.target as Node)) {
         setCalendarMobileOpen(false);
       }
     };
-    if (calendarMobileOpen) {
+    if (calendarOpen || calendarMobileOpen) {
       document.addEventListener('mousedown', handleClickOutside);
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }
-  }, [calendarMobileOpen]);
+  }, [calendarOpen, calendarMobileOpen]);
 
   const closeMobileSearch = () => {
     setMobileSearchOpen(false);
@@ -83,8 +68,6 @@ export default function Navbar({ events }: NavbarProps) {
   return (
     <header className="navbar">
       <div className="navbar-container container">
- 
-        {/* ── Logo — always visible, always left ── */}
         <div className="navbar-logo">
           <Link to="/">
             <img
@@ -95,8 +78,7 @@ export default function Navbar({ events }: NavbarProps) {
             />
           </Link>
         </div>
- 
-        {/* ── Desktop nav links (fixed slide-out on mobile → no layout impact) ── */}
+
         {menuOpen && (
           <div className="navbar-overlay" onClick={() => setMenuOpen(false)} />
         )}
@@ -113,7 +95,6 @@ export default function Navbar({ events }: NavbarProps) {
           <Link to="/map" onClick={() => setMenuOpen(false)}>Mapa</Link>
         </nav>
  
-        {/* Desktop*/}
         <div className="navbar-actions">
           <div className="search-bar">
             <Search size={22} />

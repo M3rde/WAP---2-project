@@ -99,21 +99,17 @@ export default function Events({ events, toggleSaved, error }: EventsProps) {
       return eventCats.includes(selectedCategory);
     })
     .filter(event => {
+      //caregory and date searching
       const text = searchText.toLowerCase();
       if (!text) return true;
-      // Hledej v názvu
       const inTitle = event.title.toLowerCase().includes(text);
-      // Hledej v popisu
       const inDesc = event.description?.toLowerCase().includes(text);
-      // Hledej v kategoriích
       const inCats = event.categories?.toLowerCase().includes(text);
-      // Hledej v datech (česky i číslem)
       const months = ['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'];
       let inDate = false;
       if (event.dateFrom) {
         const dateFrom = event.dateFrom.toLowerCase();
         inDate = dateFrom.includes(text);
-        // Pokud hledám měsíc česky, zkus najít i číslo měsíce
         months.forEach((m, idx) => {
           if (text === m && dateFrom.includes((idx+1).toString().padStart(2,'0'))) inDate = true;
         });
@@ -188,7 +184,7 @@ export default function Events({ events, toggleSaved, error }: EventsProps) {
       </div>
 
       <div className="filters-bar">
-        {/* search bar je pouze v navigaci */}
+        {/* search bar only in nav*/}
         <div className="filter-wrapper">
           <Filter size={18} className="filter-icon" />
           <select
@@ -262,7 +258,7 @@ export default function Events({ events, toggleSaved, error }: EventsProps) {
         )}
       </div>
 
-      {displayCount < processedEvents.length && (
+      {displayCount < processedEvents.length && !error && (
         <div className="load-more-container">
           <button
             className="primary-button"

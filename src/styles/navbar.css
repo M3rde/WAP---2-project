@@ -1,29 +1,3 @@
-.calendar-menu-btn-mobile {
-  display: none;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.7rem 1.2rem;
-  border-radius: 8px;
-  background: none;
-  color: var(--primary-color);
-  font-weight: 500;
-  font-size: 1rem;
-  text-decoration: none;
-  transition: background 0.18s, color 0.18s;
-  margin-top: 1.5rem;
-}
-.calendar-menu-btn-mobile:hover {
-  background: var(--primary-color);
-  color: #fff;
-}
-
-@media (max-width: 900px) {
-  .calendar-menu-btn-mobile {
-    display: flex;  
-     margin-top: 0;
-     padding: 0;
-  }
-}
 .navbar {
   border-bottom: 1px solid var(--gray-border);
   padding: 1rem 0;
@@ -33,11 +7,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
-
-.navbar-main {
-  display: contents; 
+.navbar-logo {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 5;
 }
 
 .navbar-logo a {
@@ -60,6 +36,9 @@
 .navbar-links {
   display: flex;
   gap: 2rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .navbar-links a {
@@ -73,12 +52,26 @@
   color: var(--primary-color);
 }
 
+.navbar-close {
+  display: none;
+  background: none;
+  border: none;
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  z-index: 210;
+  cursor: pointer;
+  padding: 0.5rem;
+}
 
 .navbar-actions {
   display: flex;
   align-items: center;
   flex-direction: row;
   gap: 1rem;
+  margin-left: auto;
+  position: relative;
+  z-index: 5;
 }
 
 .search-bar {
@@ -98,7 +91,6 @@
   color: var(--text-color);
 }
 
-
 .icon-button {
   background: none;
   border: none;
@@ -110,24 +102,17 @@
   color: inherit;
 }
 
-
-.navbar-close {
-  display: none;
-  background: none;
-  border: none;
-  position: absolute;
-  top: 1.2rem;
-  right: 1.2rem;
-  z-index: 210;
-  cursor: pointer;
-  padding: 0.5rem;
-}
-
-
 .navbar-mobile-controls {
   display: none;
   align-items: center;
   gap: 0.25rem;
+  position: relative;
+  z-index: 10;
+  margin-left: auto;
+}
+
+.navbar-mobile-controls.hidden {
+  display: none;
 }
 
 .navbar-hamburger {
@@ -140,138 +125,8 @@
   padding: 0.5rem;
 }
 
-
 .navbar-mobile-search {
   display: none;
-}
-
-
-@media (max-width: 900px) {
-
-  
-  .navbar-mobile-controls {
-    display: flex;
-  }
-
-
-  .navbar-mobile-controls.hidden {
-    display: none;
-  }
-
-
-  .navbar-links {
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 100vh;
-    width: 260px;
-    background: var(--bg-color, #fff);
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2rem;
-    padding: 5rem 2rem 2rem 2rem;
-    transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(.4, 0, .2, 1);
-    z-index: 200;
-    box-shadow: -2px 0 16px rgba(0, 0, 0, 0.08);
-    pointer-events: none;
-    opacity: 0.98;
-  }
-
-  .navbar-links.open {
-    transform: translateX(0);
-    pointer-events: auto;
-  }
-
-  .navbar-links .navbar-close {
-    display: flex;
-  }
-
-  .navbar-actions {
-    display: none;
-  }
-
-
-  .navbar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.35);
-    z-index: 150;
-    cursor: pointer;
-  }
-
-  
-  .navbar-mobile-search {
-    display: none;
-    align-items: center;
-    gap: 0.6rem;
-   
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-
-  .navbar-mobile-search.active {
-    display: flex;
-    flex: 1;               
-    margin-left: 1rem;
-    opacity: 1;
-  }
-
-  .mobile-search-icon {
-    
-    flex-shrink: 0;
-  }
-
-  .mobile-search-input {
-    flex: 1;
-    border: none;
-    outline: none;
-    background: transparent;
-    font-size: 1rem;
-    color: var(--text-color);
-    border-bottom: 1px solid var(--gray-border);
-    padding-bottom: 4px;
-    min-width: 0; 
-  }
-
-  .mobile-search-close {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    padding: 0.4rem;
-    
-    flex-shrink: 0;
-  }
-}
-
-/* Calendar Dropdown - Desktop */
-.calendar-dropdown-wrapper {
-  position: relative;
-}
-
-.calendar-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 0.5rem;
-  z-index: 1000;
-  animation: slideDown 0.2s ease-out;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* Calendar Dropdown - Desktop */
@@ -325,30 +180,119 @@
   }
 }
 
-/* Zmenšit kalendář v dropdownu */
 .calendar-dropdown .calendar-container {
-  max-width: 320px;
-  padding: 1rem;
+  max-width: 400px;
+  padding: 1.5rem;
 }
 
 .calendar-dropdown-mobile .calendar-container {
   width: auto;
-  max-width: none;
+  max-width: 320px;
 }
 
+/* Responsive Design */
+@media (max-width: 900px) {
+  .navbar-links {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 200px;
+    background: var(--bg-color, #fff);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 5rem 2rem 2rem 2rem;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 200;
+    box-shadow: -2px 0 16px rgba(0, 0, 0, 0.08);
+    pointer-events: none;
+    opacity: 0.98;
+    position: fixed !important;
+    left: auto !important;
+  }
 
-@media (max-width: 768px) {
+  .navbar-links.open {
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  .navbar-links .navbar-close {
+    display: flex;
+  }
+
+  .navbar-actions {
+    display: none;
+  }
+
+  .navbar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 150;
+    cursor: pointer;
+  }
+
+  .navbar-mobile-controls {
+    display: flex;
+  }
+
+  .navbar-mobile-search {
+    display: none;
+    align-items: center;
+    gap: 0.6rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .navbar-mobile-search.active {
+    display: flex;
+    flex: 1;
+    margin-left: 1rem;
+    opacity: 1;
+  }
+
+  .mobile-search-icon {
+    flex-shrink: 0;
+  }
+
+  .mobile-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    color: var(--text-color);
+    border-bottom: 1px solid var(--gray-border);
+    padding-bottom: 4px;
+    min-width: 0;
+  }
+
+  .mobile-search-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0.4rem;
+    flex-shrink: 0;
+  }
+
   .calendar-dropdown {
     display: none;
   }
-  
+
   .navbar-actions .calendar-dropdown-wrapper {
     display: none;
   }
 
   .calendar-dropdown-mobile {
     position: fixed;
-    top: 26%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
@@ -360,7 +304,7 @@
   }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 901px) {
   .calendar-dropdown-mobile {
     display: none;
   }
