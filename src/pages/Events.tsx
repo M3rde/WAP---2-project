@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useSearch } from '../SearchContext';
+import { filterEventsByText } from '../utils/filterEvents';
 import EventCard from '../components/EventCard';
 import SkeletonEventCard from '../components/SkeletonEventCard';
 import type { AppEvent } from '../App';
@@ -20,9 +21,25 @@ export default function Events({ events, toggleSaved, error }: EventsProps) {
   const [displayCount, setDisplayCount] = useState(50);
   const [sortBy, setSortBy] = useState<SortOption>('dateAsc');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedTimeframe, setSelectedTimeframe] = useState<TimeframeOption>('anytime');
+
+  // Handlery pro selecty
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(e.target.value);
+    setDisplayCount(50);
+  };
+
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortBy(e.target.value as SortOption);
+    setDisplayCount(50);
+  };
+
+  const handleDayChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedTimeframe(e.target.value as TimeframeOption);
+    setDisplayCount(50);
+  };
   const { searchText } = useSearch();
   const [loading, setLoading] = useState(true);
-  const [selectedTimeframe, setSelectedTimeframe] = useState<TimeframeOption>('anytime');
 
   useState(() => {
     const timer = setTimeout(() => setLoading(false), 1000);
@@ -84,57 +101,33 @@ export default function Events({ events, toggleSaved, error }: EventsProps) {
     return Array.from(new Set(allCategories)).sort();
   }, [events]);
 
-  const processedEvents = events
-    .filter(event => typeof event.timestamp === 'number' && event.timestamp > 0 && event.timestamp >= new Date().setHours(0,0,0,0))
-    .filter(event => {
-      if (selectedTimeframe === 'anytime') return true;
-      const range = getTimeframeRange(selectedTimeframe);
-      if (!range || !event.timestamp) return true;
-      return event.timestamp >= range.start && event.timestamp <= range.end;
-    })
-    .filter(event => {
-      if (selectedCategory === 'all') return true;
-      if (!event.categories) return false;
-      const eventCats = event.categories.split(',').map(cat => cat.trim());
-      return eventCats.includes(selectedCategory);
-    })
-    .filter(event => {
-      //caregory and date searching
-      const text = searchText.toLowerCase();
-      if (!text) return true;
-      const inTitle = event.title.toLowerCase().includes(text);
-      const inDesc = event.description?.toLowerCase().includes(text);
-      const inCats = event.categories?.toLowerCase().includes(text);
-      const months = ['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'];
-      let inDate = false;
-      if (event.dateFrom) {
-        const dateFrom = event.dateFrom.toLowerCase();
-        inDate = dateFrom.includes(text);
-        months.forEach((m, idx) => {
-          if (text === m && dateFrom.includes((idx+1).toString().padStart(2,'0'))) inDate = true;
-        });
-      }
-      if (event.dateTo && !inDate) {
-        const dateTo = event.dateTo.toLowerCase();
-        inDate = dateTo.includes(text);
-        months.forEach((m, idx) => {
-          if (text === m && dateTo.includes((idx+1).toString().padStart(2,'0'))) inDate = true;
-        });
-      }
-      return inTitle || inDesc || inCats || inDate;
-    });
+  const processedEvents = filterEventsByText(
+    events
+      .filter(event => typeof event.timestamp === 'number' && event.timestamp > 0 && event.timestamp >= new Date().setHours(0,0,0,0))
+      .filter(event => {
+        if (selectedTimeframe === 'anytime') return true;
+        const range = getTimeframeRange(selectedTimeframe);
+        if (!range || !event.timestamp) return true;
+        return event.timestamp >= range.start && event.timestamp <= range.end;
+      })
+      .filter(event => {
+        if (selectedCategory === 'all') return true;
+        if (!event.categories) return false;
+        const eventCats = event.categories.split(',').map(cat => cat.trim());
+        return eventCats.includes(selectedCategory);
+      }),
+    searchText
+  );
 
   if (selectedTimeframe === 'anytime') {
-   
     processedEvents.sort((a, b) => (a.timestamp || Infinity) - (b.timestamp || Infinity));
     if (processedEvents.length > 1) {
-     
-        const rest = processedEvents.slice(1);
+      const rest = processedEvents.slice(1);
       for (let i = rest.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [rest[i], rest[j]] = [rest[j], rest[i]];
       }
-        processedEvents.splice(1, rest.length, ...rest);
+      processedEvents.splice(1, rest.length, ...rest);
     }
   } else {
     processedEvents.sort((a, b) => {
@@ -154,28 +147,6 @@ export default function Events({ events, toggleSaved, error }: EventsProps) {
   }
 
   const displayedEvents = processedEvents.slice(0, displayCount);
-
-
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setLoading(true);
-    setSelectedCategory(e.target.value);
-    setDisplayCount(50);
-    setTimeout(() => setLoading(false), 1000);
-  };
-
-  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setLoading(true);
-    setSortBy(e.target.value as SortOption);
-    setDisplayCount(50);
-    setTimeout(() => setLoading(false), 1000);
-  };
-
-  const handleDayChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setLoading(true);
-    setSelectedTimeframe(e.target.value as TimeframeOption);
-    setDisplayCount(50);
-    setTimeout(() => setLoading(false), 1000);
-  };
 
   return (
     <div className="container page-container">
