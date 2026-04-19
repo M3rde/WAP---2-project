@@ -38,36 +38,57 @@ export default function Navbar({ events }: NavbarProps) {
   useLockBodyScroll(menuOpen);
   const { searchText, setSearchText } = useSearch();
 
+    const closeMobileSearch = () => {
+      setMobileSearchOpen(false);
+    };
   useEffect( () => {
     if(mobileSearchOpen){
       mobileSearchInputRef.current?.focus();
     }
   },[mobileSearchOpen])
 
-
-  // callendar close with clicking outside the box
+  // Zavřít desktop kalendář při kliknutí mimo
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (calendarOpen && calendarDropdownRef.current && !calendarDropdownRef.current.contains(event.target as Node)) {
+      if (
+        calendarDropdownRef.current &&
+        !calendarDropdownRef.current.contains(event.target as Node)
+      ) {
         setCalendarOpen(false);
       }
-      if (calendarMobileOpen && calendarMobileDropdownRef.current && !calendarMobileDropdownRef.current.contains(event.target as Node)) {
-        setCalendarMobileOpen(false);
-      }
     };
-    if (calendarOpen || calendarMobileOpen) {
+    if (calendarOpen) {
       document.addEventListener('mousedown', handleClickOutside);
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }
-  }, [calendarOpen, calendarMobileOpen]);
+  }, [calendarOpen]);
 
-  const closeMobileSearch = () => {
-    setMobileSearchOpen(false);
+  // Zavřít mobilní kalendář při kliknutí mimo
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        calendarMobileDropdownRef.current &&
+        !calendarMobileDropdownRef.current.contains(event.target as Node)
+      ) {
+        setCalendarMobileOpen(false);
+      }
+    };
+    if (calendarMobileOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [calendarMobileOpen]);
+
+  const closeBothCalendars = () => {
+    setCalendarOpen(false);
+    setCalendarMobileOpen(false);
   };
 
   return (
     <header className="navbar">
       <div className="navbar-container container">
+ 
+        {/* ── Logo — always visible, always left ── */}
         <div className="navbar-logo">
           <Link to="/">
             <img
@@ -78,7 +99,8 @@ export default function Navbar({ events }: NavbarProps) {
             />
           </Link>
         </div>
-
+ 
+        {/* ── Desktop nav links (fixed slide-out on mobile → no layout impact) ── */}
         {menuOpen && (
           <div className="navbar-overlay" onClick={() => setMenuOpen(false)} />
         )}
@@ -95,6 +117,7 @@ export default function Navbar({ events }: NavbarProps) {
           <Link to="/map" onClick={() => setMenuOpen(false)}>Mapa</Link>
         </nav>
  
+        {/* Desktop*/}
         <div className="navbar-actions">
           <div className="search-bar">
             <Search size={22} />
@@ -116,7 +139,7 @@ export default function Navbar({ events }: NavbarProps) {
             </button>
             {calendarOpen && (
               <div className="calendar-dropdown">
-                <CalendarComponent events={events} />
+                <CalendarComponent events={events} onNavigate={closeBothCalendars} />
               </div>
             )}
           </div>
@@ -162,7 +185,7 @@ export default function Navbar({ events }: NavbarProps) {
             </button>
             {calendarMobileOpen && (
               <div className="calendar-dropdown-mobile">
-                <CalendarComponent events={events} />
+                <CalendarComponent events={events} onNavigate={closeBothCalendars} />
               </div>
             )}
           </div>
