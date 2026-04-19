@@ -47,7 +47,7 @@ export default function Navbar({ events }: NavbarProps) {
     }
   },[mobileSearchOpen])
 
-  // Zavřít desktop kalendář při kliknutí mimo
+  
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -63,7 +63,6 @@ export default function Navbar({ events }: NavbarProps) {
     }
   }, [calendarOpen]);
 
-  // Zavřít mobilní kalendář při kliknutí mimo
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -88,7 +87,7 @@ export default function Navbar({ events }: NavbarProps) {
     <header className="navbar">
       <div className="navbar-container container">
  
-        {/* ── Logo — always visible, always left ── */}
+        {/* Logo */}
         <div className="navbar-logo">
           <Link to="/">
             <img
@@ -100,7 +99,7 @@ export default function Navbar({ events }: NavbarProps) {
           </Link>
         </div>
  
-        {/* ── Desktop nav links (fixed slide-out on mobile → no layout impact) ── */}
+        {/* Desktop nav links */}
         {menuOpen && (
           <div className="navbar-overlay" onClick={() => setMenuOpen(false)} />
         )}
