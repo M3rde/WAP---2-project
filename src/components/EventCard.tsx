@@ -12,12 +12,12 @@ interface EventCardProps {
 export default function EventCard({ event, toggleSaved }: EventCardProps) {
 
   function handleSavedClick(e: React.MouseEvent) {
-    e.preventDefault(); // Zabrání přechodu na odkaz
+    e.preventDefault(); // Prevents navigation to the link
     toggleSaved(event.id);
   };
 
   function handleShareClick(e: React.MouseEvent) {
-    e.preventDefault(); // Zabrání přechodu na odkaz
+    e.preventDefault(); // Prevents navigation to the link
     setUrlDialog(true);
   }
 

@@ -13,13 +13,13 @@ interface EventsProps {
   error?: string | null;
 }
 
-type SortOption = 'dateAsc' | 'dateDesc' | 'nameAsc' | 'nameDesc';
+type SortOption = 'random' | 'dateAsc' | 'dateDesc' | 'nameAsc' | 'nameDesc';
 type TimeframeOption = 'anytime' | 'today' | 'tomorrow' | 'thisWeek' | 'thisWeekend'
 
 
 export default function Events({ events, toggleSaved, error }: EventsProps) {
   const [displayCount, setDisplayCount] = useState(50);
-  const [sortBy, setSortBy] = useState<SortOption>('dateAsc');
+  const [sortBy, setSortBy] = useState<SortOption>('random');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeframeOption>('anytime');
 
@@ -119,16 +119,8 @@ export default function Events({ events, toggleSaved, error }: EventsProps) {
     searchText
   );
 
-  if (selectedTimeframe === 'anytime') {
-    processedEvents.sort((a, b) => (a.timestamp || Infinity) - (b.timestamp || Infinity));
-    if (processedEvents.length > 1) {
-      const rest = processedEvents.slice(1);
-      for (let i = rest.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [rest[i], rest[j]] = [rest[j], rest[i]];
-      }
-      processedEvents.splice(1, rest.length, ...rest);
-    }
+  if (sortBy === 'random') {
+      processedEvents.sort(() => Math.random() - 0.5);
   } else {
     processedEvents.sort((a, b) => {
       switch (sortBy) {
@@ -177,6 +169,7 @@ export default function Events({ events, toggleSaved, error }: EventsProps) {
             value={sortBy}
             onChange={handleSortChange}
           >
+            <option value="random">Překvap mě</option>
             <option value="dateAsc">Od nejbližšího data</option>
             <option value="dateDesc">Od nejvzdálenějšího data</option>
             <option value="nameAsc">Abecedně (A-Z)</option>
