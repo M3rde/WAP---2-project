@@ -303,7 +303,7 @@
 }
 
 .event-item-time {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-color, #e5e7eb);
   font-size: 0.85rem;
   white-space: nowrap;
 }

@@ -130,3 +130,26 @@
 .action-btn:hover {
   background: var(--accent-color);
 }
+
+.url-copy-wrapper {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.url-copy-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--gray-border, #e5e7eb);
+  border-radius: 6px;
+  background-color: var(--bg-color, #fff);
+  color: var(--text-color, #333);
+  cursor: text;
+}
+
+.url-copy-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
