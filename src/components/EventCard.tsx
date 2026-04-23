@@ -10,9 +10,13 @@ interface EventCardProps {
 }
 
 export default function EventCard({ event, toggleSaved }: EventCardProps) {
+
+  const [savedEffect, setSavedEffect] = useState(false);
   function handleSavedClick(e: React.MouseEvent) {
-    e.preventDefault(); // Prevents navigation to the link
+    e.preventDefault();
     toggleSaved(event.id);
+    setSavedEffect(true);
+    setTimeout(() => setSavedEffect(false), 700);
   }
 
   function handleShareClick(e: React.MouseEvent) {
@@ -46,8 +50,9 @@ export default function EventCard({ event, toggleSaved }: EventCardProps) {
             />
             <div className="event-actions">
               <button
-                className={`action-btn ${event.isSaved ? "active" : ""}`}
+                className={`action-btn ${event.isSaved ? "active" : ""} ${savedEffect ? "saved-effect" : ""}`}
                 onClick={handleSavedClick}
+                aria-label={event.isSaved ? "Uloženo" : "Uložit akci"}
               >
                 <Bookmark
                   size={16}

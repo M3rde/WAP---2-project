@@ -1,3 +1,22 @@
+.saved-effect {
+  animation: pop-saved 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 0 6px var(--accent-color, #ffb34733);
+}
+
+@keyframes pop-saved {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--accent-color, #ffb34733);
+  }
+  60% {
+    transform: scale(1.25);
+    box-shadow: 0 0 0 12px var(--accent-color, #ffb34733);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--accent-color, #ffb34733);
+  }
+}
 .skeleton {
   animation: skeleton-fade 1.2s infinite linear alternate;
 }
@@ -104,13 +123,19 @@
   letter-spacing: 1px;
 }
 
+
 .event-actions {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: flex;
+  display: none;
   gap: 10px;
+}
+
+.event-card:hover .event-actions,
+.event-card:focus-within .event-actions {
+  display: flex;
 }
 
 .action-btn {

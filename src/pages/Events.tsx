@@ -52,6 +52,14 @@ export default function Events({ events, toggleSaved, error }: EventsProps) {
     return () => clearTimeout(timer);
   });
 
+  const randomOrderMap = useMemo(() => {
+    const map = new Map<number, number>();
+    events.forEach(event => {
+      map.set(event.id, Math.random());
+    });
+    return map;
+  }, [events.length]);
+
   const getTimeframeRange = useMemo(() => {
     const now = new Date();
     now.setHours(0, 0, 0, 0);
@@ -83,6 +91,7 @@ export default function Events({ events, toggleSaved, error }: EventsProps) {
       });
     };
 
+   
     return (timeframe: TimeframeOption) => {
       switch (timeframe) {
         case "today":
@@ -148,7 +157,13 @@ export default function Events({ events, toggleSaved, error }: EventsProps) {
   );
 
   if (sortBy === "random") {
-    processedEvents.sort(() => Math.random() - 0.5);
+    processedEvents.sort((a, b) => {
+     
+      const orderA = randomOrderMap.get(a.id) ?? 0;
+      const orderB = randomOrderMap.get(b.id) ?? 0;
+      
+      return orderA - orderB;
+    });
   } else {
     processedEvents.sort((a, b) => {
       switch (sortBy) {
