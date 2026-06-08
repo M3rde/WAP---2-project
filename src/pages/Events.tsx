@@ -52,7 +52,7 @@ export default function Events({ events, toggleSaved, error }: EventsProps) {
     return () => clearTimeout(timer);
   });
 
-  const randomOrderMap = useMemo(() => {
+  const randomOrderMap = useMemo( () => {
     const map = new Map<number, number>();
     events.forEach(event => {
       map.set(event.id, Math.random());

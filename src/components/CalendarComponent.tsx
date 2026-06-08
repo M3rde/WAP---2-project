@@ -9,7 +9,7 @@ interface CalendarProps {
   onEventClick?: (event: AppEvent) => void;
   onNavigate?: () => void;
 }
-
+ 
 export default function CalendarComponent({
   events,
   onEventClick,
